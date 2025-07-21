@@ -1,22 +1,65 @@
 import React from 'react'
-import { HomeScreen } from '../screens'
-import {createNativeStackNavigator} from "@react-navigation/native-stack"
+import { HomeScreen, CreateCodeScreen, ScanCodeScreen, HistoryScreen } from '../screens'
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Image } from 'react-native'
+import Assets from "../config/assets"
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
+const TabNavigator = () => (
+  <Tab.Navigator initialRouteName='CreateCode'>
+    <Tab.Screen
+      name='CreateCode'
+      component={CreateCodeScreen}
+      options={{
+                headerShown:false,
 
-const UserStack = () => {
-  return (
+        title: "Create",
+        tabBarIcon: ({ focused }) => (
+          <Image source={Assets.images.icons.QRCODE}
+            style={{ height: 30, width: 30, tintColor: focused ? "blue" : "gray"  }} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name='ScanCode'
+      component={ScanCodeScreen}
+      options={{
+        headerShown:false,
+        title: "Scan",
+        tabBarIcon: ({ focused }) => (
+          <Image source={Assets.images.icons.SCANNER}
+            style={{ height: 30, width: 30, tintColor: focused ? "blue" : "gray" }} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name='History'
+      component={HistoryScreen}
+      options={{
+                headerShown:false,
 
-    <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown:false}}>
+        title: "History",
+        tabBarIcon: ({ focused }) => (
+          <Image source={Assets.images.icons.HISTORY}
+            style={{ height: 30, width: 30, tintColor: focused ? "blue" : "gray" }} 
+             />
+        ),
+        tabBarActiveTintColor: "blue",
+        tabBarInactiveTintColor: "gray"
 
-        <Stack.Screen name="Home" component={HomeScreen}/>
+      }}
+    />
+  </Tab.Navigator>
+);
 
+const UserStack = () => (
+  <Stack.Navigator initialRouteName="TabHome" screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Screen name='TabHome' component={TabNavigator} />
+  </Stack.Navigator>
+);
 
-    </Stack.Navigator>
-
-    
-  )
-}
-
-export default UserStack
+export default UserStack;
